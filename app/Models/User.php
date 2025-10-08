@@ -24,6 +24,12 @@ class User extends Authenticatable
 
     }
 
+    public function userType() {
+
+        return $this->belongsTo(UserType::class);
+
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -33,6 +39,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'user_type'
     ];
 
     /**

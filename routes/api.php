@@ -21,7 +21,7 @@ Route::prefix('product')->group(function() {
 
     Route::post('register', [ProductController::class, 'register']);
 
-    Route::put('update', [ProductController::class, 'update']);
+    Route::put('update/{id}', [ProductController::class, 'update']);
 
     Route::get('get', [ProductController::class, 'show']);
 

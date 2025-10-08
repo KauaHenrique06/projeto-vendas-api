@@ -2,29 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Services\ProductService;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ProductCreateRequest;
 
 class ProductController extends Controller
 {
-    public function register(Request $request) {
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100'],
-            'price' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
-            'quantity' => ['required', 'integer']
-        ]);
+    protected ProductService $productService;
 
-        $product = Product::create([
-            'name' => $validated['name'],
-            'price' => $validated['price'],
-            'quantity' => $validated['quantity']
-        ]);
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
 
-        return response()->json(['produto cadastrado' => true, 'product' => $product]);
-            // $table->id();
-            // $table->string('name');
-            // $table->decimal('price', total:8, places:2);
-            // $table->bigInteger('quantity');
+    public function register(ProductCreateRequest $request) {
+
+        DB::beginTransaction();
+
+        try {
+
+            $product = $this->productService->index($request->validated());
+
+            DB::commit();
+
+            return ResponseHelper::success(false, 'produto adicionado com sucesso', $product, 200);
+
+        } catch(\Exception $e) {
+
+            DB::rollBack();
+
+            return ResponseHelper::error(true, $e->getMessage(), null, 400);
+
+        }
+
     } 
 }

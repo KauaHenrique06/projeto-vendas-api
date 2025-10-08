@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
-use App\Models\User;
 use App\Services\AuthService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginUserRequest;
