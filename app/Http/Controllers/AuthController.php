@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
+
+    protected AuthService $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    public function index(RegisterUserRequest $request) {
         
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100'],
-            'email' => ['required','string', 'max:100'],
-            'password' => ['required', 'string', 'min:6', 'confirmed']
-        ]);
+        DB::transaction();
 
-        DB::beginTransaction();
         try{
-            
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => $validated['password'],
-            ]);
 
-            $token = $user->createToken('token-api');
-            return response()->json(['user' => $user, 'registrado' => true, 'token' => $token->plainTextToken]);
+            $user = $this->authService->register($request->validated());
+
+            return response()->json(['error' => false, 'user' => $user]);
             
             DB::commit();
 

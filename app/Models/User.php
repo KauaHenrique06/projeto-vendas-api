@@ -14,6 +14,17 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * Um usuário possui várias vendas
+     * 
+     * @return HasMany
+     */
+    public function sale() {
+
+        return $this->hasMany(Sale::class);
+
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
