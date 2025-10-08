@@ -2,64 +2,74 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegisterUserRequest;
+use App\Helpers\ResponseHelper;
 use App\Models\User;
 use App\Services\AuthService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\RegisterUserRequest;
+use Exception;
 
 class AuthController extends Controller
 {
 
+    /**
+     * Declaro a variavel para armazenar a instancia da classe AuthService
+     */
     protected AuthService $authService;
 
+    /**
+     * Passo os valores que ele irá receber,
+     * diz que a instancia da classe deve ser passada quando a classe for criada
+     */
     public function __construct(AuthService $authService)
     {
+        /**
+         * Quer dizer que a variavel da minha classe authService 
+         * vai guardar o objeto recebido no construtor.
+         * 
+         * O this serve para indicar a classe atual
+         */
         $this->authService = $authService;
     }
 
     public function index(RegisterUserRequest $request) {
         
-        DB::transaction();
+        DB::beginTransaction();
 
         try{
 
             $user = $this->authService->register($request->validated());
 
-            return response()->json(['error' => false, 'user' => $user]);
-            
             DB::commit();
 
-        }catch(\Exception $e){
+            return ResponseHelper::success(false, 'usuário criado com sucesso', $user, 200);
+
+        }catch(Exception $e){
 
             DB::rollBack();
-            throw($e);
+
+            return ResponseHelper::error(true, $e->getMessage(), null, 400);
 
         }
 
     }
 
-    public function login(Request $request) {
+    public function login(LoginUserRequest $request) {
 
-        $validated = $request->validate([
-            'email' => ['required','string', 'max:100'],
-            'password' => ['required', 'string', 'min:6']
-        ]); 
+        try{
 
-        if(Auth::attempt($validated)) {
+            $user = $this->authService->login($request->validated());
 
-            $user = User::where('email', $validated['email'])->first();
+            $token = $user->createToken('token-acesso')->plainTextToken;
 
-            $token = $user->createToken('token-api');
-            return response()->json(['user' => $user, 'loggado' => true, 'token' => $token]);
+            return ResponseHelper::success(false, 'usuário logado com sucesso', $token, 200);
+ 
+        } catch(\Exception $e) {
 
+            return ResponseHelper::error(true, $e->getMessage(), null, 400);
         }
-
-        return response()->json(['loggado' => false, 'mensagem' => 'credenciais inválidas']);
-
+    
     }
-
    
-
 }
