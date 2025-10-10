@@ -62,7 +62,7 @@ class AuthController extends Controller
 
             $token = $user->createToken('token-acesso')->plainTextToken;
 
-            return ResponseHelper::success(false, 'usuário logado com sucesso', $token, 200);
+            return ResponseHelper::success(false, 'usuário logado com sucesso', ['token' => $token], 200);
  
         } catch(\Exception $e) {
 

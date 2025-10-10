@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +20,22 @@ Route::prefix('auth')->group(function() {
 
 Route::prefix('product')->group(function() {
 
+    Route::get('/get', [ProductController::class, 'index']);
+
     Route::post('/store', [ProductController::class, 'store'])->middleware('auth:sanctum');
 
     Route::put('/{id}', [ProductController::class, 'update'])->middleware('auth:sanctum');
 
     Route::delete('/{id}', [ProductController::class, 'destroy'])->middleware('auth:sanctum');
 
-    Route::get('/get', [ProductController::class, 'index']);
+});
 
+Route::prefix('sale')->group(function() {
+
+    Route::get('/get', [SaleController::class, 'index'])->middleware("auth:sanctum");
+
+    Route::post('/store', [SaleController::class, 'store'])->middleware('auth:sanctum');
+
+    Route::get('/{id}', [SaleController::class, 'show'])->middleware('auth:sanctum');
+    
 });

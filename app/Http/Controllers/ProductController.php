@@ -50,7 +50,7 @@ class ProductController extends Controller
 
             $product = $this->productService->destroy($id);
 
-            return ResponseHelper::success(false, 'produto excluido com sucesso', $product, 200);
+            return ResponseHelper::success(false, 'produto excluido com sucesso', null, 200);
 
         } catch(\Exception $e) {
 
