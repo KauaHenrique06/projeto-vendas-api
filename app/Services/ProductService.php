@@ -3,10 +3,17 @@
 namespace App\Services;
 use App\Models\Product;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ProductService {
 
     public function store(Array $productData) {
+
+        $logged_user = Auth::user();
+
+        if($logged_user->user_type_id != 1){
+            throw new \Exception("Apenas vendedores podem criar produtos");
+        }
 
         $product = Product::create([
             'name' => $productData['name'],
@@ -19,6 +26,12 @@ class ProductService {
     }
 
     public function destroy($id) {
+
+        $logged_user = Auth::user();
+
+        if($logged_user->user_type_id != 1){
+            throw new \Exception("Apenas vendedores podem remover produtos");
+        }
 
         /**
          * Procuro o item com o id passado na requisição
@@ -40,6 +53,11 @@ class ProductService {
     }
 
     public function update(Array $productData, $id) {
+        $logged_user = Auth::user();
+
+        if($logged_user->user_type_id != 1){
+            throw new \Exception("Apenas vendedores podem atualizar produtos");
+        }
 
         $product = Product::find($id);
 

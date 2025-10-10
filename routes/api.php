@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Http\Request;
@@ -37,5 +38,17 @@ Route::prefix('sale')->group(function() {
     Route::post('/store', [SaleController::class, 'store'])->middleware('auth:sanctum');
 
     Route::get('/{id}', [SaleController::class, 'show'])->middleware('auth:sanctum');
+
+    Route::delete('/{id}', [SaleController::class, 'destroy'])->middleware('auth:sanctum');
+
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/orders', [OrderController::class, 'store']);
+
+    Route::post('/orders/{order}/accept', [OrderController::class, 'accept'])->middleware('auth:sanctum');
+
+    Route::post('/orders/{order}/deny', [OrderController::class, 'deny'])->middleware('auth:sanctum');
     
 });

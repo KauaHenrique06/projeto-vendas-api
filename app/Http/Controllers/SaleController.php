@@ -47,4 +47,18 @@ class SaleController extends Controller
     public function index(){
         return ResponseHelper::success(false, "Lista de vendas buscada", $this->saleService->index(), 200);
     }
+
+    public function destroy($id){
+        DB::beginTransaction();
+        try{
+
+            $sale = $this->saleService->destroy($id);
+            DB::commit();
+
+            return ResponseHelper::success(false, "Venda cancelada com sucesso", null, 200);
+        }catch(\Exception $e){
+            DB::rollBack();
+            return ResponseHelper::error(true, $e->getMessage(), null, 400);
+        }
+    }
 }

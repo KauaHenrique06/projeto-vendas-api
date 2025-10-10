@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\Sale;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use stdClass;
 
 class SaleService
@@ -42,9 +44,17 @@ class SaleService
     }
 
     public function index(){
-        $sales = Sale::all();
+        $auth_user = FacadesAuth::user();
+
+        $sales = [];
 
         $formattedSales = [];
+
+        if($auth_user->user_type_id == 2){
+            $sales = Sale::where('user_id', $auth_user->id)->get();
+        }else{
+            $sales = Sale::all();
+        }
 
         foreach($sales as $sale){
             $formatted = $this->formatSale($sale);
@@ -53,6 +63,22 @@ class SaleService
         }
 
         return $formattedSales;
+    }
+
+    public function destroy($id){
+        $sale = Sale::find($id);
+
+        if(!$sale){
+            throw new \Exception("Non Existent Sale!");
+        }
+
+        $product = Product::where('id', $sale->product_id)->firstOrFail();
+
+        $product->quantity = $product->quantity + $sale->quantity;
+
+        $product->save();
+
+        return $sale->delete();
     }
 
     // UTILS
