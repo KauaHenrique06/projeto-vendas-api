@@ -7,6 +7,7 @@ use App\Services\ProductService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -18,13 +19,13 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function register(ProductCreateRequest $request) {
+    public function store(ProductCreateRequest $request) {
 
         DB::beginTransaction();
 
         try {
 
-            $product = $this->productService->index($request->validated());
+            $product = $this->productService->store($request->validated());
 
             DB::commit();
 
@@ -47,7 +48,7 @@ class ProductController extends Controller
 
         try {
 
-            $product = $this->productService->delete($id);
+            $product = $this->productService->destroy($id);
 
             return ResponseHelper::success(false, 'produto excluido com sucesso', $product, 200);
 
@@ -79,6 +80,21 @@ class ProductController extends Controller
 
         }
 
+    }
+
+    public function index() {
+
+        try {
+
+            $product = $this->productService->index();
+
+            return ResponseHelper::success(false, 'lista de produtos', $product, 200);
+
+        } catch(\Exception $e) {
+
+            return ResponseHelper::error(true, $e->getMessage(), null, 400);
+
+        }
     }
 
 }

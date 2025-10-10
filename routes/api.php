@@ -11,7 +11,7 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('auth')->group(function() {
 
-    Route::post('/register', [AuthController::class, 'index']);
+    Route::post('/register', [AuthController::class, 'register']);
 
     Route::post('/login', [AuthController::class, 'login']);
 
@@ -19,12 +19,12 @@ Route::prefix('auth')->group(function() {
 
 Route::prefix('product')->group(function() {
 
-    Route::post('/register', [ProductController::class, 'register']);
+    Route::post('/store', [ProductController::class, 'store'])->middleware('auth:sanctum');
 
-    Route::put('/update/{id}', [ProductController::class, 'update']);
+    Route::put('/{id}', [ProductController::class, 'update'])->middleware('auth:sanctum');
 
-    Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
+    Route::delete('/{id}', [ProductController::class, 'destroy'])->middleware('auth:sanctum');
 
-    Route::get('/get', [ProductController::class, 'show']);
+    Route::get('/get', [ProductController::class, 'index']);
 
 });

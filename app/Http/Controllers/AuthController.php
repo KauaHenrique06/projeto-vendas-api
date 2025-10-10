@@ -32,7 +32,7 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function index(RegisterUserRequest $request) {
+    public function register(RegisterUserRequest $request) {
         
         DB::beginTransaction();
 

@@ -6,7 +6,7 @@ use Exception;
 
 class ProductService {
 
-    public function index(Array $productData) {
+    public function store(Array $productData) {
 
         $product = Product::create([
             'name' => $productData['name'],
@@ -18,7 +18,7 @@ class ProductService {
 
     }
 
-    public function delete($id) {
+    public function destroy($id) {
 
         /**
          * Procuro o item com o id passado na requisição
@@ -54,6 +54,14 @@ class ProductService {
          * os dados que vão ser atualizados
          */
         $product->update($productData);
+
+        return $product;
+
+    }
+
+    public function index() {
+
+        $product = Product::all();
 
         return $product;
 
