@@ -103,7 +103,7 @@ class ProductController extends Controller
 
         try {
 
-            $product = $this->productService->update($request->validated(), $id);
+            $product = $this->productService->updateQuantity($request->validated(), $id);
 
             DB::commit();
 
