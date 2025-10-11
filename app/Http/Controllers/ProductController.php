@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductQuantityRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use App\Models\Product;
 
 class ProductController extends Controller
 {
