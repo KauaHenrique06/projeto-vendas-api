@@ -50,7 +50,7 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
 ## Endpoints
 
 ### Usuário
-- http://127.0.0.1:8000/api/auth/register
+- `http://127.0.0.1:8000/api/auth/register`
 ```
 {
     "name": "jonas",
@@ -71,7 +71,7 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
     "token": "string"
 }
 ```
-- http://127.0.0.1:8000/api/auth/login
+- `http://127.0.0.1:8000/api/auth/login`
 ```
 {
     "email": "jonas1@gmail.com",
@@ -106,7 +106,7 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
 }
 ```
 ### Produtos
-- http://127.0.0.1:8000/api/product/store
+- `http://127.0.0.1:8000/api/product/store`
 ```
 {
     "name": "arroz",
@@ -128,7 +128,7 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
     "status": 200
 }
 ```
-- http://127.0.0.1:8000/api/product/{id}
+- `http://127.0.0.1:8000/api/product/{id}`
 ```
 {
     "error": false,
@@ -137,7 +137,7 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
     "status": 200
 }
 ```
-- http://127.0.0.1:8000/api/product/{id}
+- `http://127.0.0.1:8000/api/product/{id}`
 ```
 {
     "error": false,
@@ -153,7 +153,7 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
     "status": 200
 }
 ```
-- http://127.0.0.1:8000/api/product/quantity/{id}
+- `http://127.0.0.1:8000/api/product/quantity/{id}`
 ```
 {
     "quantity": 34
@@ -173,7 +173,7 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
     "status": 200
 }
 ```
-- http://127.0.0.1:8000/api/product/get
+- `http://127.0.0.1:8000/api/product/get`
 ```
 {
     "error": false,
@@ -200,4 +200,111 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
 }
 ```
 ### Vendas
-- http://127.0.0.1:8000/api/sale/store
+- `http://127.0.0.1:8000/api/sale/store`
+```
+{
+  "error": false,
+  "message": "Venda Cadastrada com sucesso",
+  "data": {
+    "user_id": "3",
+    "product_id": "1",
+    "quantity": "2",
+    "unit_price": "5.50",
+    "updated_at": "2025-10-11T02:12:31.000000Z",
+    "created_at": "2025-10-11T02:12:31.000000Z",
+    "id": 5
+  },
+  "status": 201
+}
+```
+- `http://127.0.0.1:8000//api/sale/{id}`
+```
+{
+  "error": false,
+  "message": "Venda Buscada com sucesso",
+  "data": {
+    "id": 5,
+    "product_id": 1,
+    "product_name": "biscoito",
+    "user_id": 3,
+    "user_name": "Pedro",
+    "quantity": 2,
+    "total_price": 11
+  },
+  "status": 200
+}
+```
+- `http://127.0.0.1:8000//api/sale/{id}`
+```
+{
+  "error": false,
+  "message": "Venda cancelada com sucesso",
+  "data": null,
+  "status": 200
+}
+```
+- `http://127.0.0.1:8000/api/sale/get`
+```
+{
+  "error": false,
+  "message": "Lista de vendas buscada",
+  "data": [
+    {
+      "id": 4,
+      "product_id": 3,
+      "product_name": "biscoito",
+      "user_id": 3,
+      "user_name": "Pedro",
+      "quantity": 3,
+      "total_price": 6
+    },
+    {
+      "id": 5,
+      "product_id": 1,
+      "product_name": "biscoito",
+      "user_id": 3,
+      "user_name": "Pedro",
+      "quantity": 2,
+      "total_price": 11
+    }
+  ],
+  "status": 200
+}
+```
+### Pedidos
+- `http://127.0.0.1:8000/api/orders`
+```
+{
+  "error": false,
+  "message": "Pedido criado, aguarde a resposta da loja",
+  "data": {
+    "user_id": 3,
+    "product_id": "3",
+    "quantity": "3",
+    "status": "pending",
+    "updated_at": "2025-10-11T02:18:02.000000Z",
+    "created_at": "2025-10-11T02:18:02.000000Z",
+    "id": 3
+  },
+  "status": 200
+}
+```
+- `http://127.0.0.1:8000/orders/{id}/accept`
+```
+{
+  "error": false,
+  "message": "Pedido aceito!",
+  "data": null,
+  "status": 200
+}
+```
+- `http://127.0.0.1:8000/api/orders/{id}/deny`
+
+```
+{
+  "error": false,
+  "message": "Pedido rejeitado!",
+  "data": null,
+  "status": 200
+}
+```
