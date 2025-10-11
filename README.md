@@ -200,5 +200,4 @@ DB_PASSWORD=070506 //senha cadastrada no banco (caso possua uma)
 }
 ```
 ### Vendas
-
-
+- http://127.0.0.1:8000/api/sale/store
