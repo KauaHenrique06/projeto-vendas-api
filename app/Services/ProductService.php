@@ -85,4 +85,30 @@ class ProductService {
 
     }
 
+    public function updateQuantity(Array $productData, $id) {
+
+        $logged_user = Auth::user();
+
+        if($logged_user->user_type_id != 1){
+            throw new \Exception("Apenas vendedores podem atualizar produtos");
+        }
+
+        $product = Product::find($id);
+
+        if(!$product) {
+
+            throw new Exception('produto não cadastrado');
+            
+        }
+
+        /**
+         * Chamo o método de atualizar e passo
+         * os dados que vão ser atualizados
+         */
+        $product->update($productData);
+
+        return $product;
+
+    }
+
 }

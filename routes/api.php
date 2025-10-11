@@ -29,6 +29,8 @@ Route::prefix('product')->group(function() {
 
     Route::delete('/{id}', [ProductController::class, 'destroy'])->middleware('auth:sanctum');
 
+    Route::put('/quantity/{id}', [ProductController::class, 'updateQuantity'])->middleware('auth:sanctum');
+
 });
 
 Route::prefix('sale')->group(function() {

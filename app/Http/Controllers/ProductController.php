@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Services\ProductService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProductCreateRequest;
+use App\Http\Requests\ProductQuantityRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
 
@@ -95,6 +96,29 @@ class ProductController extends Controller
             return ResponseHelper::error(true, $e->getMessage(), null, 400);
 
         }
+    }
+
+    public function updateQuantity(ProductQuantityRequest $request, $id) {
+
+        DB::beginTransaction();
+
+        try {
+
+            $product = $this->productService->update($request->validated(), $id);
+
+            DB::commit();
+
+            return ResponseHelper::success(false, 'quantidade atualizado com sucesso', $product, 200);
+
+
+        } catch(\Exception  $e) {
+
+            DB::rollBack();
+
+            return ResponseHelper::error(true, $e->getMessage(), null, 400);
+
+        }
+
     }
 
 }
