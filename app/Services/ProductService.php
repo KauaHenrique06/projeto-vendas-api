@@ -101,11 +101,13 @@ class ProductService {
             
         }
 
+        $product->quantity = $productData['quantity'] + $product->quantity;
+
         /**
          * Chamo o método de atualizar e passo
          * os dados que vão ser atualizados
          */
-        $product->update($productData);
+        $product->save();
 
         return $product;
 
