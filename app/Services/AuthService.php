@@ -13,7 +13,7 @@ class AuthService {
             'name' => $userData['name'],
             'email' => $userData['email'],
             'password' => $userData['password'],
-
+            'user_type_id'=> empty($userData['user_type_id']) ? 2 : $userData['user_type_id']
         ]);
 
         return $user;
