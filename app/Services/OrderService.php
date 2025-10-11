@@ -82,8 +82,8 @@ class OrderService
     {
         $logged_user = FacadesAuth::user();
 
-        if($logged_user->user_type_id != 2){
-            throw new \Exception("Apenas clientes podem negar pedidos");
+        if($logged_user->user_type_id != 1){
+            throw new \Exception("Apenas vendedores podem negar pedidos");
         }
 
         $order = Order::find($id);
